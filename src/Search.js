@@ -24,7 +24,6 @@ class Search extends Component {
     window.fetch(searchURL+'nameStartsWith='+encodeURIComponent(query))
     .then(response => response.json())
     .then(json => {
-      console.log("REQUEST ",json);
       this.setState({
         results: json.data.results,
         loading: false
@@ -37,11 +36,9 @@ class Search extends Component {
     this.setState({
       query: event.target.value // = "Captain"
     });
-    console.log(this.state.query);
   }
 
   results(){
-    console.log("RESULTS", this.state.results.length);
     return this.state.results.map(r => (
       <div key={r.id} data-testid="result" data-name={r.name}>
         {r.name}

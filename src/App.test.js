@@ -115,6 +115,11 @@ test('renders without crashing', async () => {
 
   await nextTick();
 
+  expect(window.fetch).toBeCalledTimes(1);
+  expect(window.fetch).toBeCalledWith(
+    expect.stringContaining("nameStartsWith=Captain")
+  );
+
   const results = queryAllByTestId("result");
   expect(results).not.toHaveLength(0);
   results.forEach(r => {
