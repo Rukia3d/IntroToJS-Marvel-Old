@@ -135,4 +135,11 @@ test('renders without crashing', async () => {
   expect(characters).toHaveLength(1);
   expect(characters[0]).toHaveTextContent(results[0].dataset.name);
 
+  expect(dom.getByTestId(characters[0], "picture").src).toEqual(
+    'http://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg'
+  );
+
+  expect(dom.getByTestId(characters[0], "descr")).toHaveTextContent(
+    capSearchResult.data.results[0].description
+  );
 });

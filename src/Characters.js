@@ -1,7 +1,15 @@
 import React from 'react';
 
 const Character = (props) => (
-  <div data-testid="character">{props.character.name}</div>
+  <div data-testid="character">
+    {props.character.name}
+    <img
+      data-testid="picture"
+      alt={props.character.name}
+      src={props.character.thumbnail.path+"."+props.character.thumbnail.extension}
+    />
+  <div data-testid="descr">{props.character.description}</div>
+  </div>
 );
 
 const ShowCharacters = (props) => (
