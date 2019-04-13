@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Characters from './Characters';
+import Search from './Search';
 import './App.css';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      characters: []
+    }
+    this.addCharacter = this.addCharacter.bind(this);
+  }
+
+  addCharacter(c){
+    this.setState({
+      characters: this.state.characters.concat([c])
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Characters chars={this.state.characters}/>
+        <Search add={this.addCharacter} />
       </div>
     );
   }
