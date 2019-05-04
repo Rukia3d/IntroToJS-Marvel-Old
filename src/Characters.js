@@ -5,7 +5,7 @@ import ShowCharacters from './ShowCharacters';
 const Characters = (props) => (
   <div data-testid="characters" className="row">
    {props.chars.length>0
-     ? <ShowCharacters chars={props.chars} />
+     ? <ShowCharacters chars={props.chars} removeCharacter={props.removeCharacter}/>
      : <NoCharacters /> }
   </div>
 );

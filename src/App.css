@@ -1,3 +1,6 @@
 body {
     padding-top: 120px;
 }
+
+.visible { display: flex;}
+.hidden {display: none;}

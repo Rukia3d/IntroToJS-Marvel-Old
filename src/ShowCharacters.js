@@ -4,7 +4,7 @@ const groupSize = 3;
 const Character = (props) => (
   <div className="card text-white bg-primary mb-3" style={{maxWidth: "20rem"}} data-testid="character">
     <div className="card-body">
-      <h4 className="card-title">{props.character.name}</h4>
+      <h4 className="card-title" data-testid="name">{props.character.name}</h4>
         <img
           style={{maxWidth: "18rem"}}
           data-testid="picture"
@@ -12,55 +12,83 @@ const Character = (props) => (
           src={props.character.thumbnail.path+"."+props.character.thumbnail.extension}
         />
       <p className="card-text" data-testid="descr">{props.character.description}</p>
+      <button className="btn btn-outline-secondary" data-testid="deleteButton" onClick={() => props.removeCharacter(props.character.id)}> Delete</button>
     </div>
   </div>
 );
 
-class ShowCharacters extends Component {
+class ShowCharacters extends Component{
   constructor(){
     super();
     this.state = {
       page: 0
-    };
-    this.switchPage = this.switchPage.bind(this);
+    }
+    this.switchPageBack = this.switchPageBack.bind(this);
+    this.switchPageForw = this.switchPageForw.bind(this);
   }
 
   groupChars(){
     let groups = [];
-    for(let i = 0; i<this.props.chars.length; i+=groupSize){
-      groups.push(
-        { id:i/groupSize, chars: this.props.chars.slice(i, i+groupSize) }
-      );
+
+    for(let i=0; i<this.props.chars.length; i+=groupSize){
+      groups.push({ id:i/groupSize, chars: this.props.chars.slice(i, i+groupSize) });
     }
+
     return groups;
   }
 
-  switchPage(){
-    const maxPage = parseInt(this.props.chars.length/3);
+  getMaxPage(){
+    if(this.props.chars.length<groupSize){
+      return 0;
+    } else {
+      return parseInt((this.props.chars.length-1)/groupSize);
+    }
+  }
+  switchPageForw(){
+    const maxPage = parseInt(this.props.chars.length/groupSize);
     const nextPage = this.state.page >= maxPage ? 0 : this.state.page+1;
 
-    this.setState({ page: nextPage });
-  }
+    this.setState({page: nextPage});
+  };
+
+  switchPageBack(){
+    const maxPage = parseInt(this.props.chars.length/groupSize);
+    const prevPage = this.state.page === 0 ? maxPage : this.state.page-1;
+
+    this.setState({page: prevPage});
+  };
 
   renderPage(chars, page){
+    const visible = page===this.state.page ? 'visible' : 'hidden';
     return(
-    <div key={page} style={{display: page===this.state.page ? "block" : "none" }} onClick={this.switchPage}>
+      <div key={page} className={visible} data-testid={`page-${visible}`} >
       {
         chars.map(c => (
-         <div className="bs-component" key={c.id}>
-           <Character character={c}/>
-         </div>
-       ))
+            <div className="bs-component" key={c.id}>
+              <Character character={c} removeCharacter={this.props.removeCharacter}/>
+            </div>
+          ))
       }
-     </div>
-   )
+      </div>
+    )
   }
 
   render(){
-    console.log(this.props.chars);
-    return this.groupChars().map(g =>(
-      this.renderPage(g.chars, g.id)
-    ))
+    return (
+      <div style={{position:"relative"}}>
+        { this.groupChars().map(g => (this.renderPage(g.chars, g.id))) }
+        { this.getMaxPage()>0 ? <button className="btn btn-outline-info"
+          style={{position:"absolute", left:"-2em", top:0}}
+          onClick={this.switchPageBack}
+          data-testid="switchR"> &laquo; </button>
+          : null }
+        { this.getMaxPage()>0 ? <button className="btn btn-outline-info"
+          style={{position:"absolute", right:"-2em", top:0}}
+          onClick={this.switchPageForw}
+          data-testid="switchL"> &raquo; </button>
+          : null }
+      </div>
+    )
   }
 
 }

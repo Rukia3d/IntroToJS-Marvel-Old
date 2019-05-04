@@ -93,7 +93,7 @@ let capSearchResult = {
 afterEach(cleanup);
 
 test('renders without crashing', async () => {
-  const { getByTestId, queryByTestId, queryAllByTestId } = render(<App/>);
+  const { getByTestId, queryByTestId, queryAllByTestId, getAllByTestId } = render(<App/>);
   expect(getByTestId("characters")).toHaveTextContent("No characters");
   expect(getByTestId("search")).toBeTruthy();
   expect(getByTestId("searchBtn")).toBeTruthy();
@@ -130,8 +130,11 @@ test('renders without crashing', async () => {
   const buttonRes = getByTestId("addBtn");
   fireEvent.click(buttonRes);
 
+  const noButton = queryByTestId('switchR');
+  expect(noButton).toBeNull();
+
   expect(getByTestId("characters")).not.toHaveTextContent("No characters");
-  const characters = queryAllByTestId("character");
+  const characters = getAllByTestId("character");
   expect(characters).toHaveLength(1);
   expect(characters[0]).toHaveTextContent(results[0].dataset.name);
 
@@ -142,4 +145,36 @@ test('renders without crashing', async () => {
   expect(dom.getByTestId(characters[0], "descr")).toHaveTextContent(
     capSearchResult.data.results[0].description
   );
+
+  // Add more characters (all 6)
+  const buttons = getAllByTestId('addBtn');
+  buttons.slice(1, 6).forEach(b => fireEvent.click(b));
+
+  // Expect that only 3 shown
+  const visiblePage = getByTestId('page-visible');
+  const charNames = dom.getAllByTestId(visiblePage, "name").map(m => m.innerHTML);
+  expect(charNames).toEqual([ 'Captain America', 'Captain Britain', 'Captain Cross' ]);
+
+  // Expect that 3 are hidden
+  const inVisiblePage = getByTestId('page-hidden');
+  const charNamesInv = dom.getAllByTestId(inVisiblePage, "name").map(m => m.innerHTML);
+  expect(charNamesInv).toEqual(["Captain Flint", "Captain Marvel (Carol Danvers)", "Captain Universe"]);
+
+  // Find and press ButtonRight
+  // Expect characters changed
+  const buttonR = getByTestId('switchR');
+  fireEvent.click(buttonR);
+
+  const visiblePageR = getByTestId('page-visible');
+  const charNamesR = dom.getAllByTestId(visiblePageR, "name").map(m => m.innerHTML);
+  expect(charNamesR).toEqual(["Captain Flint", "Captain Marvel (Carol Danvers)", "Captain Universe"]);
+
+  // Deletion
+  const deleteBtn = getByTestId("deleteButton");
+  fireEvent.click(deleteBtn);
+  const visiblePageForDeletion = getByTestId('page-visible');
+  const charNamesForDeletion = dom.getAllByTestId(visiblePageForDeletion, "name").map(m => m.innerHTML);
+  expect(charNamesForDeletion).toEqual(["Captain Marvel (Carol Danvers)", "Captain Universe"]);
+
+
 });

@@ -18,6 +18,7 @@ class App extends Component {
       characters: []
     }
     this.addCharacter = this.addCharacter.bind(this);
+    this.removeCharacter = this.removeCharacter.bind(this);
   }
 
   addCharacter(c){
@@ -26,12 +27,20 @@ class App extends Component {
     });
   }
 
+  removeCharacter(c){
+    const newCharacters = this.state.characters.filter( char => char.id !== c);
+
+    this.setState({
+      characters: newCharacters
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <Nav/>
         <div className="container">
-          <Characters chars={this.state.characters}/>
+          <Characters chars={this.state.characters} removeCharacter={this.removeCharacter}/>
           <Search add={this.addCharacter} />
         </div>
       </div>
