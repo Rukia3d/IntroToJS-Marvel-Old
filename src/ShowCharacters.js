@@ -45,16 +45,12 @@ class ShowCharacters extends Component{
     }
   }
   switchPageForw(){
-    const maxPage = parseInt(this.props.chars.length/groupSize);
-    const nextPage = this.state.page >= maxPage ? 0 : this.state.page+1;
-
+    const nextPage = this.state.page >= this.getMaxPage() ? 0 : this.state.page+1;
     this.setState({page: nextPage});
   };
 
   switchPageBack(){
-    const maxPage = parseInt(this.props.chars.length/groupSize);
-    const prevPage = this.state.page === 0 ? maxPage : this.state.page-1;
-
+    const prevPage = this.state.page === 0 ? this.getMaxPage() : this.state.page-1;
     this.setState({page: prevPage});
   };
 
@@ -79,12 +75,12 @@ class ShowCharacters extends Component{
         { this.groupChars().map(g => (this.renderPage(g.chars, g.id))) }
         { this.getMaxPage()>0 ? <button className="btn btn-outline-info"
           style={{position:"absolute", left:"-2em", top:0}}
-          onClick={this.switchPageBack}
+          onClick={this.switchPageForw}
           data-testid="switchR"> &laquo; </button>
           : null }
         { this.getMaxPage()>0 ? <button className="btn btn-outline-info"
           style={{position:"absolute", right:"-2em", top:0}}
-          onClick={this.switchPageForw}
+          onClick={this.switchPageBack}
           data-testid="switchL"> &raquo; </button>
           : null }
       </div>

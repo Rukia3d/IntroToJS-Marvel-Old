@@ -5,6 +5,7 @@ import * as dom from 'dom-testing-library';
 import App from './App';
 const nextTick = () => new Promise(r => process.nextTick(r));
 
+// Test opbect that pretends it's returned by API
 let capSearchResult = {
   "code": 200,
   "status": "Ok",
@@ -93,6 +94,8 @@ let capSearchResult = {
 afterEach(cleanup);
 
 test('renders without crashing', async () => {
+
+  // expect that there are no characters by default
   const { getByTestId, queryByTestId, queryAllByTestId, getAllByTestId } = render(<App/>);
   expect(getByTestId("characters")).toHaveTextContent("No characters");
   expect(getByTestId("search")).toBeTruthy();
@@ -106,6 +109,8 @@ test('renders without crashing', async () => {
       json: () => Promise.resolve(capSearchResult)
     })
   );
+
+  // Enter "Captain" and press the search button. Expect it loads
   const search = getByTestId("search");
   fireEvent.change(search, {target: {value: "Captain"}});
   const button = getByTestId("searchBtn");
@@ -113,13 +118,16 @@ test('renders without crashing', async () => {
   expect(getByTestId("searchRes")).toBeTruthy();
   expect(getByTestId("searchRes")).toHaveTextContent("Loading...");
 
+  // Wait for pseudo-responce
   await nextTick();
 
+  // Check that there was one call and we send Captain out
   expect(window.fetch).toBeCalledTimes(1);
   expect(window.fetch).toBeCalledWith(
     expect.stringContaining("nameStartsWith=Captain")
   );
 
+  // Check that captains were returned
   const results = queryAllByTestId("result");
   expect(results).not.toHaveLength(0);
   results.forEach(r => {
@@ -127,12 +135,19 @@ test('renders without crashing', async () => {
     expect(dom.getByTestId(r, "addBtn")).toBeTruthy();
   });
 
+  // Press Add for the first captain
   const buttonRes = getByTestId("addBtn");
   fireEvent.click(buttonRes);
 
+  // Confirm the character was removed after addition
+  const resultsRefreshed = queryAllByTestId("result");
+  expect(dom.getByTestId(resultsRefreshed[0], "res-name")).toHaveTextContent(results[1].dataset.name);
+
+  // Captain is the only one - no switch buttons
   const noButton = queryByTestId('switchR');
   expect(noButton).toBeNull();
 
+  // We have characters now
   expect(getByTestId("characters")).not.toHaveTextContent("No characters");
   const characters = getAllByTestId("character");
   expect(characters).toHaveLength(1);
@@ -147,8 +162,11 @@ test('renders without crashing', async () => {
   );
 
   // Add more characters (all 6)
-  const buttons = getAllByTestId('addBtn');
-  buttons.slice(1, 6).forEach(b => fireEvent.click(b));
+  for(let i=1; i<capSearchResult.data.results.length; i++){
+    const button = getAllByTestId('addBtn')[0];
+    fireEvent.click(button)
+  }
+
 
   // Expect that only 3 shown
   const visiblePage = getByTestId('page-visible');

@@ -38,11 +38,23 @@ class Search extends Component {
     });
   }
 
+  removeResult(r){
+    const newResult = this.state.results.filter( res => res.id !== r);
+    this.setState({
+      results: newResult
+    });
+  }
+
+  update(c){
+    this.removeResult(c.id);
+    this.props.add(c);
+  }
+
   results(){
     return this.state.results.map(r => (
       <li key={r.id} data-testid="result" data-name={r.name} className="list-group-item d-flex justify-content-between align-items-center">
-        {r.name}
-        <button data-testid="addBtn" className="btn btn-primary btn-sm" onClick={() => this.props.add(r)}>Add</button>
+        <span data-testid="res-name">{r.name}</span>
+        <button data-testid="addBtn" className="btn btn-primary btn-sm" onClick={() => this.update(r)}>Add</button>
       </li>
     ));
   }
@@ -50,7 +62,7 @@ class Search extends Component {
   renderResults(){
     return (
       this.state.results
-        ? <div data-testid="searchRes" className="col-lg-10">
+        ? <div data-testid="searchRes" className="col-lg-10 noIdent">
               <div className="bs-component">
                 <ul className="list-group">
                   {this.results()}
