@@ -21,15 +21,15 @@ class App extends Component {
     this.removeCharacter = this.removeCharacter.bind(this);
   }
 
-  addCharacter(c){
+  addCharacter(character){
     this.setState({
-      characters: this.state.characters.concat([c])
+      characters: this.state.characters.concat([character])
     });
   }
 
   removeCharacter(c){
+    //let c = parseInt(event.target.dataset.id);
     const newCharacters = this.state.characters.filter( char => char.id !== c);
-
     this.setState({
       characters: newCharacters
     });

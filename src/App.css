@@ -10,3 +10,7 @@ body {
   padding-left: 0px;
   padding-top: 15px;
 }
+
+.highlighted {
+  background-color: #abb6c2 !important;
+}

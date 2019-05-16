@@ -187,12 +187,20 @@ test('renders without crashing', async () => {
   const charNamesR = dom.getAllByTestId(visiblePageR, "name").map(m => m.innerHTML);
   expect(charNamesR).toEqual(["Captain Flint", "Captain Marvel (Carol Danvers)", "Captain Universe"]);
 
+  const buttonL = getByTestId('switchL');
+  fireEvent.click(buttonL);
+
+  const visiblePageL = getByTestId('page-visible');
+  const charNamesL = dom.getAllByTestId(visiblePageL, "name").map(m => m.innerHTML);
+  expect(charNamesL).toEqual(['Captain America', 'Captain Britain', 'Captain Cross']);
+
   // Deletion
   const deleteBtn = getByTestId("deleteButton");
   fireEvent.click(deleteBtn);
+
   const visiblePageForDeletion = getByTestId('page-visible');
   const charNamesForDeletion = dom.getAllByTestId(visiblePageForDeletion, "name").map(m => m.innerHTML);
-  expect(charNamesForDeletion).toEqual(["Captain Marvel (Carol Danvers)", "Captain Universe"]);
+  expect(charNamesForDeletion).toEqual(['Captain Britain', 'Captain Cross', "Captain Flint"]);
 
 
 });

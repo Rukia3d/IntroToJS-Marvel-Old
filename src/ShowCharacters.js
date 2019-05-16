@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 const groupSize = 3;
 
-const Character = (props) => (
+const Character = (props) => console.log('character', props) || (
   <div className="card text-white bg-primary mb-3" style={{maxWidth: "20rem"}} data-testid="character">
     <div className="card-body">
       <h4 className="card-title" data-testid="name">{props.character.name}</h4>
