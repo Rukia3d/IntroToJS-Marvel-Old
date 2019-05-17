@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
-const apiKey = '4349118c475b4f8fc68c3a2f780946b5';
-const searchURL = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apiKey}&`;
+import request from './data/captain.json';
+
+//const apiKey = '4349118c475b4f8fc68c3a2f780946b5';
+//const searchURL = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apiKey}&`;
+
+const Item = (props) => (
+  <li key={props.r.id} data-testid="result" data-name={props.r.name}
+    className={"list-group-item d-flex justify-content-between align-items-center" + (props.highlights.some(str => props.r.name.includes(str)) ? 'highlighted' : '')}>
+    <span data-testid="res-name">{props.r.name}</span>
+    <button data-testid="addBtn" className="btn btn-primary btn-sm" onClick={() => props.onClick(props.r)}>Add</button>
+  </li>
+)
 
 class Search extends Component {
   constructor(props){
@@ -8,33 +18,51 @@ class Search extends Component {
     this.state = {
       results: null,
       query: "",
-      loading: false
+      loading: false,
+      highlight: false
     }
     this.search = this.search.bind(this);
     this.saveQuery = this.saveQuery.bind(this);
+    this.removeResult = this.removeResult.bind(this);
+    this.toggleHighlight = this.toggleHighlight.bind(this);
   }
 
+  highlights() {
+    if (this.state.highlight) {
+      return ['(', ')'];
+    } else {
+      return [];
+    }
+  }
 
   search(event){
     event.preventDefault();
-    const query = this.state.query;
     this.setState({
       loading: true
     });
-    window.fetch(searchURL+'nameStartsWith='+encodeURIComponent(query))
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        results: json.data.results,
-        loading: false
-      });
-    })
+    //const query = this.state.query;
+    // window.fetch(searchURL+'nameStartsWith='+encodeURIComponent(query))
+    // .then(response => response.json())
+    // .then(json => {
+    //   this.setState({
+    //     results: json.data.results,
+    //     loading: false
+    //   });
+    // })
+
+    this.setState({
+      loading: false,
+      results: request.data.results
+    });
+  }
+
+  toggleHighlight() {
+    this.setState({ highlight: !this.state.highlight });
   }
 
   saveQuery(event){
-    // this.state.query = ""
     this.setState({
-      query: event.target.value // = "Captain"
+      query: event.target.value
     });
   }
 
@@ -51,12 +79,7 @@ class Search extends Component {
   }
 
   results(){
-    return this.state.results.map(r => (
-      <li key={r.id} data-testid="result" data-name={r.name} className="list-group-item d-flex justify-content-between align-items-center">
-        <span data-testid="res-name">{r.name}</span>
-        <button data-testid="addBtn" className="btn btn-primary btn-sm" onClick={() => this.update(r)}>Add</button>
-      </li>
-    ));
+    return this.state.results.map(r => <Item highlights={this.highlights()} r={r} key={r.id} onClick={() => this.update(r)} />)
   }
 
   renderResults(){
