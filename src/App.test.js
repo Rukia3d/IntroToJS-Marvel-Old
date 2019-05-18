@@ -102,6 +102,7 @@ test('renders without crashing', async () => {
   expect(getByTestId("searchBtn")).toBeTruthy();
   expect(queryByTestId("searchRes")).toBeNull();
 
+  // Commented out as this code mocks the api request for Marvel API
   // window.fetch = jest.fn();
   // window.fetch.mockReturnValueOnce(
   //   Promise.resolve({
@@ -115,12 +116,15 @@ test('renders without crashing', async () => {
   fireEvent.change(search, {target: {value: "Captain"}});
   const button = getByTestId("searchBtn");
   fireEvent.click(button);
+
+  // Commented out as this code mocks the api request for Marvel API
   //expect(getByTestId("searchRes")).toBeTruthy();
   //expect(getByTestId("searchRes")).toHaveTextContent("Loading...");
 
   // Wait for pseudo-responce
   await nextTick();
 
+  // Commented out as this code mocks the api request for Marvel API
   // Check that there was one call and we send Captain out
   // expect(window.fetch).toBeCalledTimes(1);
   // expect(window.fetch).toBeCalledWith(

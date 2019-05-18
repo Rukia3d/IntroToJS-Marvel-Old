@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import request from './data/captain.json';
 
+// Commented out as this code needed for a working Marvel API
 //const apiKey = '4349118c475b4f8fc68c3a2f780946b5';
 //const searchURL = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apiKey}&`;
 
@@ -40,6 +41,7 @@ class Search extends Component {
     this.setState({
       loading: true
     });
+    // Comented out as this code neede fro a working Marvel API
     //const query = this.state.query;
     // window.fetch(searchURL+'nameStartsWith='+encodeURIComponent(query))
     // .then(response => response.json())
