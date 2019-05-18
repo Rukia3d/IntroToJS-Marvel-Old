@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-const apiKey = '4349118c475b4f8fc68c3a2f780946b5';
-const searchURL = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apiKey}&`;
+import request from './data/captain.json';
+
+//const apiKey = '4349118c475b4f8fc68c3a2f780946b5';
+//const searchURL = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apiKey}&`;
 
 const highlightOriginal = [];
 const highlightBrackets = ['(', ')'];
@@ -45,18 +47,23 @@ class Search extends Component {
 
   search(event){
     event.preventDefault();
-    const query = this.state.query;
     this.setState({
       loading: true
     });
-    window.fetch(searchURL+'nameStartsWith='+encodeURIComponent(query))
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        results: json.data.results,
-        loading: false
-      });
-    })
+    //const query = this.state.query;
+    // window.fetch(searchURL+'nameStartsWith='+encodeURIComponent(query))
+    // .then(response => response.json())
+    // .then(json => {
+    //   this.setState({
+    //     results: json.data.results,
+    //     loading: false
+    //   });
+    // })
+
+    this.setState({
+      loading: false,
+      results: request.data.results
+    });
   }
 
   saveQuery(event){
