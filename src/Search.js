@@ -8,23 +8,6 @@ const highlightOriginal = [];
 const highlightBrackets = ['(', ')'];
 
 class Item extends React.PureComponent {
-<<<<<<< Updated upstream
-  highlighted() {
-    return this.props.highlights.some(str => this.props.r.name.includes(str));
-  }
-
-  render() {
-    const highlightClass = this.highlighted() ? 'highlighted' : '';
-
-    return (
-      <li data-testid="result" data-name={this.props.r.name}
-        className={`${highlightClass} list-group-item d-flex justify-content-between align-items-center`}
-        >
-        <span data-testid="res-name">{this.props.r.name}</span>
-        <button data-testid="addBtn" data-id={this.props.r.id} onClick={this.props.onClick} className="btn btn-primary btn-sm">Add</button>
-      </li>
-    );
-=======
   highlighted(){
     return this.props.highlights.some(str => this.props.charData.name.includes(str));
   }
@@ -40,14 +23,13 @@ class Item extends React.PureComponent {
         <button
           data-testid="addBtn"
           className="btn btn-primary btn-sm"
-          data-id={charData.id} 
+          data-id={charData.id}
           onClick={onClick}
         >
           Add
         </button>
       </li>
     )
->>>>>>> Stashed changes
   }
 }
 
@@ -67,17 +49,16 @@ class Search extends Component {
     this.update = this.update.bind(this);
   }
 
-<<<<<<< Updated upstream
   toggleHighlight() {
     this.setState({ highlight: !this.state.highlight });
-=======
+  }
+
   highlights() {
     if (this.state.highlight) {
       return highlightBrackets;
     } else {
       return highlightOriginal;
     }
->>>>>>> Stashed changes
   }
 
   search(event){
@@ -115,7 +96,6 @@ class Search extends Component {
   }
 
   update(event){
-<<<<<<< Updated upstream
     const charID = parseInt(event.target.dataset.id);
     this.removeResult(charID);
 
@@ -123,29 +103,11 @@ class Search extends Component {
     this.props.add(character);
   }
 
-  highlights() {
-    if (this.state.highlight) {
-      return highlightBrackets;
-    }
-    return highlightOriginal;
-  }
-
-  results(){
-    return this.state.results.map(r => <Item highlights={this.highlights()} r={r} key={r.id} onClick={this.update} />);
-=======
-    const charId = parseInt(event.target.dataset.id);
-    console.log("char update ", charId);
-    this.removeResult(charId);
-
-    const character = this.state.results.find(c => c.id === charId);
-    this.props.add(character);
-  }
 
   results(){
     return this.state.results.map(c =>
       <Item highlights={this.highlights()} charData={c} key={c.id} onClick={this.update} />
     )
->>>>>>> Stashed changes
   }
 
   renderResults(){
