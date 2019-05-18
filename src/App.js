@@ -27,8 +27,13 @@ class App extends Component {
     });
   }
 
+<<<<<<< Updated upstream
   removeCharacter(c){
     //let c = parseInt(event.target.dataset.id);
+=======
+  removeCharacter(event){
+    let c = parseInt(event.target.dataset.id);
+>>>>>>> Stashed changes
     const newCharacters = this.state.characters.filter( char => char.id !== c);
     this.setState({
       characters: newCharacters
