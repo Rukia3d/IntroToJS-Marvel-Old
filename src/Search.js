@@ -6,7 +6,7 @@ import request from './data/captain.json';
 
 const Item = (props) => (
   <li key={props.r.id} data-testid="result" data-name={props.r.name}
-    className={"list-group-item d-flex justify-content-between align-items-center" + (props.highlights.some(str => props.r.name.includes(str)) ? 'highlighted' : '')}>
+    className={"list-group-item d-flex justify-content-between align-items-center" + (props.highlights.some(str => props.r.name.includes(str)) ? ' highlighted' : '')}>
     <span data-testid="res-name">{props.r.name}</span>
     <button data-testid="addBtn" className="btn btn-primary btn-sm" onClick={() => props.onClick(props.r)}>Add</button>
   </li>
