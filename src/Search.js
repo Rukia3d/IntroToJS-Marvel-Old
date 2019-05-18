@@ -102,13 +102,19 @@ class Search extends Component {
         <div className="col-lg-12">
         <form className="bs-component" onSubmit={this.search}>
           <div className="form-row">
-            <div className="col-sm-10">
+            <div className="col-sm-8">
               <input
                 className="form-control form-control-lg"
                 onChange={this.saveQuery}
                 placeholder="Search for Character by Name"
                 data-testid="search"
                 type="text" required/>
+            </div>
+            <div className="col-sm-2">
+              <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" id="customCheck1" onChange={this.toggleHighlight} />
+                    <label className="custom-control-label" htmlFor="customCheck1">Extended</label>
+              </div>
             </div>
             <div className="col-sm-2">
               <button className="btn btn-primary btn-lg" data-testid="searchBtn">Search</button>
