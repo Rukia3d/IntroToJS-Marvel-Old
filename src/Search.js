@@ -26,6 +26,7 @@ class Search extends Component {
     this.saveQuery = this.saveQuery.bind(this);
     this.removeResult = this.removeResult.bind(this);
     this.toggleHighlight = this.toggleHighlight.bind(this);
+    this.update = this.update.bind(this);
   }
 
   highlights() {
