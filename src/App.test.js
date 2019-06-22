@@ -102,30 +102,30 @@ test('renders without crashing', async () => {
   expect(getByTestId("searchBtn")).toBeTruthy();
   expect(queryByTestId("searchRes")).toBeNull();
 
-  // window.fetch = jest.fn();
-  // window.fetch.mockReturnValueOnce(
-  //   Promise.resolve({
-  //     ok: true,
-  //     json: () => Promise.resolve(capSearchResult)
-  //   })
-  // );
+  window.fetch = jest.fn();
+  window.fetch.mockReturnValueOnce(
+    Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(capSearchResult)
+    })
+  );
 
   // Enter "Captain" and press the search button. Expect it loads
   const search = getByTestId("search");
   fireEvent.change(search, {target: {value: "Captain"}});
   const button = getByTestId("searchBtn");
   fireEvent.click(button);
-  //expect(getByTestId("searchRes")).toBeTruthy();
-  //expect(getByTestId("searchRes")).toHaveTextContent("Loading...");
+  expect(getByTestId("searchRes")).toBeTruthy();
+  expect(getByTestId("searchRes")).toHaveTextContent("Loading...");
 
   // Wait for pseudo-responce
   await nextTick();
 
   // Check that there was one call and we send Captain out
-  // expect(window.fetch).toBeCalledTimes(1);
-  // expect(window.fetch).toBeCalledWith(
-  //   expect.stringContaining("nameStartsWith=Captain")
-  // );
+  expect(window.fetch).toBeCalledTimes(1);
+  expect(window.fetch).toBeCalledWith(
+    expect.stringContaining("nameStartsWith=Captain")
+  );
 
   // Check that captains were returned
   const results = queryAllByTestId("result");
